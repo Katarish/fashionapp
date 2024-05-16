@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SuggestionsList extends StatelessWidget{
-
+class SuggestionsList extends StatelessWidget {
   final List<String> suggestions;
   final ValueChanged<String> onTap;
 
@@ -13,13 +12,18 @@ class SuggestionsList extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: suggestions.map((suggestion) {
-          return ListTile(
-            title: Text(suggestion),
-            onTap: () => onTap(suggestion),
-          );
-        }).toList(),
+      child: Container(
+        color: Colors.black,
+        height: 200.0,
+        child: ListView.builder(
+          itemCount: suggestions.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(suggestions[index]),
+              onTap: () => onTap(suggestions[index]),
+            );
+          },
+        ),
       ),
     );
   }

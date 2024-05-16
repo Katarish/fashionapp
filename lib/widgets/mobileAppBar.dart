@@ -1,90 +1,104 @@
-import 'package:fashionapp/widgets/search_field.dart';
-import 'package:fashionapp/widgets/suggestions_list.dart';
-import 'package:flutter/cupertino.dart';
+import 'suggestions_list.dart';
 import 'package:flutter/material.dart';
+import 'search_field.dart';
 
 class MobileAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final GlobalKey<ScaffoldState> scaffoldkey;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  MobileAppBar({required this.scaffoldkey});
+  MobileAppBar({required this.scaffoldKey});
 
   @override
-  _MobileAppBar createState() => _MobileAppBar();
+  _MobileAppBarState createState() => _MobileAppBarState();
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
-class _MobileAppBar extends State<MobileAppBar> {
-  bool _isSearching = false;
-  TextEditingController _searchController = TextEditingController();
-  List<String> _suggestions = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
-  List<String> _filteredSuggestions = [];
+class _MobileAppBarState extends State<MobileAppBar> {
+  //bool _isSearching = false;
+  //TextEditingController _searchController = TextEditingController();
 
-  void _filterSuggestions(String query) {
-    setState(() {
-      _filteredSuggestions = _suggestions
-          .where((suggestion) => suggestion.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
-  }
+
 
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.pink.shade50,
-      //elevation: 20,
-      title: _isSearching
-          ? SearchField(controller: _searchController, onChanged: _filterSuggestions)
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Shaanvi',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
-                Text('A Boutique for Theme Designs', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),),
-              ],
-            ),
+      backgroundColor: Colors.transparent,
+      title: Center(child: Text('Shaanvi')),
       leading: IconButton(
         icon: Icon(Icons.menu),
-        onPressed: (){
-          widget.scaffoldkey.currentState?.openDrawer();
+        onPressed: () {
+          widget.scaffoldKey.currentState?.openDrawer();
         },
       ),
       actions: [
-        _isSearching
-          ? IconButton(onPressed: (){
-            setState(() {
-              _isSearching = false;
-              _searchController.clear();
-              _filteredSuggestions.clear();
-            });
-        }, icon: Icon(Icons.close))
-            : IconButton(onPressed: (){
-              setState(() {
-                _isSearching = true;
-              });
-        }, icon: Icon(Icons.search)),
-        IconButton(onPressed: (){}, icon: Icon(Icons.shopping_cart))
+        IconButton(icon: Icon(Icons.search), onPressed: (){
+          showSearch(context: context, delegate: MySearchDelegate(),);
+        },)
       ],
-      bottom: _isSearching
-          ? PreferredSize(
-        preferredSize: Size.fromHeight(200.0),
-        child: Container(
-          color: Colors.white,
-          height: 200.0,
-          child: SuggestionsList(
-            suggestions: _filteredSuggestions,
-            onTap: (suggestion) {
-              setState(() {
-                _searchController.text = suggestion;
-                _isSearching = false;
-                _filteredSuggestions.clear();
-              });
-            },
-          ),
-        ),
-      )
-          : null,
     );
+  }
+}
+
+class MySearchDelegate extends SearchDelegate{
+  List<String> searchresults = [
+    'Apple',
+    'Banana',
+    'Cherry',
+    'Date',
+    'Elderberry'
+  ];
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+    IconButton(
+        onPressed: (){
+          if(query.isEmpty){
+            close(context, null);
+          }else{
+            query = '';
+          }
+
+          },
+        icon: Icon(Icons.clear))
+  ];
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+      onPressed: () => close(context, null), //close search bar
+      icon: Icon(Icons.arrow_back)
+  );
+
+  @override
+  Widget buildResults(BuildContext context) => Center(
+    child: Text(
+      query,
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+    ),
+  );
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> _suggestions = searchresults.where((searchresults) =>
+        searchresults.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+
+
+    return ListView.builder(
+        itemCount: _suggestions.length,
+        itemBuilder: (context,index){
+          final suggestion = _suggestions[index];
+          return ListTile(
+            title: Text(suggestion),
+            onTap: (){
+              query = suggestion;
+
+              showResults(context);
+            },
+          );
+        });
+
   }
 }

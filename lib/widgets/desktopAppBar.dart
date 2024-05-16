@@ -3,45 +3,45 @@ import 'package:flutter/material.dart';
 class DesktopAppBar extends StatefulWidget implements PreferredSizeWidget{
 
   @override
-  State<DesktopAppBar> createState() => _DesktopAppBar();
+  _DesktopAppBar createState() => _DesktopAppBar();
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
-
 }
 
 class _DesktopAppBar extends State<DesktopAppBar> {
- // bool _isSearching = false;
-  TextEditingController _searchController  = TextEditingController();
+  bool _isSearching = false;
+  TextEditingController _searchController = TextEditingController();
+
 
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      //backgroundColor: Colors.pink.shade50,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Shaanvi', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
-              Text('A Boutique for Theme Designs', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),),
+              Text('Shaanvi',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pinkAccent),),
+              Text('A boutique for Theme Based Designs',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.pinkAccent),),
             ],
           ),
           Container(
-            width: 300,
+            width: 200,
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: "Search..",
-                prefixIcon: Icon(Icons.search),
+                hintText: 'Search...',
                 border: InputBorder.none
               ),
             ),
-          )
+          ),
         ],
       ),
       actions: [
@@ -52,6 +52,8 @@ class _DesktopAppBar extends State<DesktopAppBar> {
           ],
         )
       ],
+
+
     );
   }
 }
