@@ -1,6 +1,9 @@
 import 'package:fashionapp/Widgets/desktopAppBar.dart';
 import 'package:fashionapp/Widgets/mobileAppBar.dart';
+import 'package:fashionapp/widgets/appDrawer.dart';
+import 'package:fashionapp/widgets/image_carousel.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +30,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -39,24 +41,20 @@ class MyHomePage extends StatelessWidget {
     }
     return Scaffold(
       key: _scaffoldKey,
+        //extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent,
       appBar: _appBar,
       drawer: screenWidth < 600
-          ? Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(child: Text('Menu')),
-            ListTile(title: Text('Home')),
-            ListTile(title: Text('Profile')),
-            ListTile(title: Text('Settings')),
-          ],
-        ),
-      )
+          ? AppDrawer()
           : null,
       body:SingleChildScrollView(
-          child: Container(
-            height: 400,
-              color: Colors.pink.shade50,
-              child: Text("hello"))
+          child: Column(
+            children: [
+              ImageCarousel(screenWidth: screenWidth,),
+              ImageCarousel(screenWidth: screenWidth,),
+              ImageCarousel(screenWidth: screenWidth,),
+            ],
+          )
       )
     );
   }
