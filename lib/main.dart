@@ -1,4 +1,6 @@
+import 'package:fashionapp/Widgets/collections_widget.dart';
 import 'package:fashionapp/Widgets/desktopAppBar.dart';
+import 'package:fashionapp/Widgets/hanspicked_edit.dart';
 import 'package:fashionapp/Widgets/mobileAppBar.dart';
 import 'package:fashionapp/widgets/appDrawer.dart';
 import 'package:fashionapp/widgets/image_carousel.dart';
@@ -51,8 +53,9 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             children: [
               ImageCarousel(screenWidth: screenWidth,),
-              ImageCarousel(screenWidth: screenWidth,),
-              ImageCarousel(screenWidth: screenWidth,),
+              MyCollections(),
+              MyHandpicked(),
+              //ImageCarousel(screenWidth: screenWidth,),
             ],
           )
       )
